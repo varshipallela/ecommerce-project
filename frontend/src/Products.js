@@ -288,7 +288,7 @@ import { useLocation } from "react-router-dom";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import "./App.css";
 
-// 🔗 Backend base URL (your deployed backend)
+// ✅ Deployed backend base URL
 const BACKEND_URL = "https://ecommerce-backendss.onrender.com";
 
 function useQuery() {
@@ -299,9 +299,9 @@ function useQuery() {
 function Products({ products = [], addToCart, addToWishlist, user }) {
   const [loading, setLoading] = useState(false);
   const query = useQuery();
-  const category = query.get("category"); // Women | Men | Kids | Bags | null
+  const category = query.get("category"); // Example: Women | Men | Kids | Bags | null
 
-  // ✅ Filter by category
+  // ✅ Filter products by category
   const filtered = useMemo(() => {
     if (!category || category === "All") return products;
     return products.filter(
@@ -309,9 +309,12 @@ function Products({ products = [], addToCart, addToWishlist, user }) {
     );
   }, [products, category]);
 
-  // ✅ Handle Buy Now
+  // ✅ Handle "Buy Now"
   const handleBuyNow = async (product) => {
-    if (!user) return alert("Please login first");
+    if (!user) {
+      alert("Please login first");
+      return;
+    }
 
     setLoading(true);
 
@@ -326,8 +329,8 @@ function Products({ products = [], addToCart, addToWishlist, user }) {
       ],
       shippingAddress: {
         address: "123 Street",
-        city: "City",
-        postalCode: "12345",
+        city: "Hyderabad",
+        postalCode: "500001",
         country: "India",
       },
       paymentMethod: "PayPal",
@@ -343,12 +346,13 @@ function Products({ products = [], addToCart, addToWishlist, user }) {
       });
       alert("Order placed successfully!");
     } catch (err) {
-      alert(err.response?.data?.message || "Order failed");
+      alert(err.response?.data?.message || "Order failed!");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
+  // ✅ Show empty message if no products
   if (!filtered || filtered.length === 0) {
     return <h2 className="empty-note">No products found</h2>;
   }
@@ -363,13 +367,14 @@ function Products({ products = [], addToCart, addToWishlist, user }) {
 
       <div className="product-grid">
         {filtered.map((p) => {
-          // ✅ Correct image URL
+          // ✅ Correct backend image URL
           const imageUrl = p.image?.startsWith("http")
             ? p.image
-            : `${BACKEND_URL}/uploads/${p.image.split("/").pop()}`;
+            : `${BACKEND_URL}/uploads/${p.image?.split("/").pop()}`;
 
           return (
             <div className="product-card v2" key={p._id || p.id}>
+              {/* Product Image */}
               <div className="product-img-block">
                 <img
                   src={imageUrl}
@@ -381,11 +386,13 @@ function Products({ products = [], addToCart, addToWishlist, user }) {
                 />
               </div>
 
+              {/* Product Info */}
               <div className="product-meta">
                 <h4 className="product-brand">{p.name}</h4>
                 <p className="product-title">{p.description}</p>
               </div>
 
+              {/* Price + Cart + Wishlist */}
               <div className="product-bottom-row">
                 <button
                   className="icon-btn-plain"
@@ -406,6 +413,7 @@ function Products({ products = [], addToCart, addToWishlist, user }) {
                 </button>
               </div>
 
+              {/* Buy Now Button */}
               <button
                 className="btn-primary"
                 style={{ marginTop: "0.8rem" }}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./App.css"; // Make sure App.css has the styles
+import "./App.css"; // Keep your styling
 
 function Register() {
   const [name, setName] = useState("");
@@ -9,15 +9,29 @@ function Register() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  // ✅ Backend API Base URL (uses .env variable if available)
+  const API_BASE_URL =
+    process.env.REACT_APP_API_URL ||
+    "https://ecommerce-backendss.onrender.com";
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:5000/api/users/register", { name, email, password })
-      .then(() => {
-        alert("Registered Successfully");
+
+    try {
+      const { data } = await axios.post(`${API_BASE_URL}/api/users/register`, {
+        name,
+        email,
+        password,
+      });
+
+      if (data) {
+        alert("✅ Registered Successfully!");
         navigate("/login");
-      })
-      .catch((err) => alert(err.response.data.message));
+      }
+    } catch (err) {
+      console.error("Registration Error:", err);
+      alert(err.response?.data?.message || "❌ Registration failed!");
+    }
   };
 
   return (
@@ -27,18 +41,20 @@ function Register() {
         <form onSubmit={handleSubmit} className="auth-form">
           <input
             type="text"
-            placeholder="Name"
+            placeholder="Full Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
+
           <input
             type="email"
-            placeholder="Email"
+            placeholder="Email Address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+
           <input
             type="password"
             placeholder="Password"
@@ -46,6 +62,7 @@ function Register() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+
           <button type="submit" className="btn-primary">
             Register
           </button>

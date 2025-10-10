@@ -62,9 +62,15 @@ function Login({ setUser }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // ✅ Use deployed backend API instead of localhost
       const { data } = await axios.post(
-        "http://localhost:5000/api/users/login",
-        { email, password }
+        "https://ecommerce-backendss.onrender.com/api/users/login",
+        { email, password },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
 
       // Save user in App.js state
