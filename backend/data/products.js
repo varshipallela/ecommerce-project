@@ -121,7 +121,10 @@
 
 // export default products;
 // backend/data/products.js
-const BACKEND_URL = "http://localhost:5000/uploads"; // Change this URL if deployed
+// const BACKEND_URL = "http://localhost:5000/uploads"; // Change this URL if deployed
+const BACKEND_URL = process.env.BACKEND_URL 
+  ? `${process.env.BACKEND_URL}/uploads` 
+  : "http://localhost:5000/uploads";
 
 const products = [
   // Women (8 products)
