@@ -639,8 +639,7 @@ function App() {
   );
 
   // ✅ Your deployed backend URL
-  const API_BASE_URL = "https://ecommerce-backendss.onrender.com";
-
+const API_BASE_URL = "https://ecommerce-backen-y6qo.onrender.com";
   // ✅ Fetch products from backend
   useEffect(() => {
     const fetchProducts = async () => {

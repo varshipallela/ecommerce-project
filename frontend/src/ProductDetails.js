@@ -238,12 +238,11 @@ function ProductDetails({ addToCart, addToWishlist }) {
   const [wishlist, setWishlist] = useState(false);
 
   useEffect(() => {
-    axios
-      // ✅ Use deployed backend API instead of localhost
-      .get(`https://ecommerce-backendss.onrender.com/api/products/${id}`)
-      .then((res) => setProduct(res.data))
-      .catch((err) => console.error("Error fetching product:", err));
-  }, [id]);
+  axios
+    .get(`https://ecommerce-backen-y6qo.onrender.com/api/products/${id}`)
+    .then((res) => setProduct(res.data))
+    .catch((err) => console.error("Error fetching product:", err));
+}, [id]);
 
   const brandAndTitle = (p) => {
     if (!p) return { brand: "", title: "" };

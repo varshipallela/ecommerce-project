@@ -10,9 +10,9 @@ function Register() {
   const navigate = useNavigate();
 
   // ✅ Backend API Base URL (uses .env variable if available)
-  const API_BASE_URL =
-    process.env.REACT_APP_API_URL ||
-    "https://ecommerce-backendss.onrender.com";
+ 
+
+    const API_BASE_URL = "https://ecommerce-backen-y6qo.onrender.com";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
